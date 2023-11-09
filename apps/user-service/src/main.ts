@@ -1,9 +1,11 @@
 import helmet from 'helmet';
 import * as compression from 'compression';
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
-import { APP_HOST, APP_NODE, APP_PORT } from 'libs/src/config/env';
+
 import { UserServiceModule } from './user-service.module';
+import { APP_HOST, APP_NODE, APP_PORT, setupSwagger } from 'libs/src';
+import { BadRequestExceptionFilter } from 'libs/src/common/exception/badRequest.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(UserServiceModule);
@@ -39,11 +41,18 @@ async function bootstrap() {
   /**
    * https://stackoverflow.com/questions/48851140/how-to-handle-typeorm-entity-field-unique-validation-error-in-nestjs
    */
-
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new BadRequestExceptionFilter(httpAdapter));
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+
+  /**
+   * Set Swagger
+   */
+  setupSwagger(app);
 
   await app.listen(APP_PORT, APP_HOST, () => {
     console.log(`[WEB SERVICE ${APP_NODE}]`, `//${APP_HOST}:${APP_PORT}`);
   });
 }
+
 bootstrap();
