@@ -18,6 +18,9 @@ export class UserProfile extends Document {
   @Prop()
   weight: number;
 
+  @Prop({ required: false })
+  imageUrl: string;
+
   @Prop({ type: [String], default: [] })
   interests: string[];
 }

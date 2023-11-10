@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as fs from 'fs';
+
 import { User } from './schema/user.schema';
 import { RegisterDto } from '../auth/dto/registerDto';
 import { CreateProfileDto } from './dto/create-profile.dto';
@@ -24,7 +26,11 @@ export class UserService {
     }
   }
 
-  async createProfile(payload: CreateProfileDto, req): Promise<UserProfile> {
+  async createProfile(
+    payload: CreateProfileDto,
+    req,
+    file: Express.Multer.File,
+  ): Promise<UserProfile> {
     try {
       //check is profle exist
       const profile = await this.getProfile(req);
@@ -33,18 +39,31 @@ export class UserService {
       const userProfile = await this.userProfileModel.create({
         ...payload,
         user: req.user.id,
+        ...(file ? { imageUrl: file.path } : null),
       });
       return userProfile;
     } catch (err) {
+      if (file) fs.unlinkSync(file.path);
       throw new BadRequestException(err.message);
     }
   }
 
-  async updateProfile(payload: CreateProfileDto, req): Promise<UserProfile> {
+  async updateProfile(
+    payload: CreateProfileDto,
+    req,
+    file: Express.Multer.File,
+  ): Promise<UserProfile> {
     try {
+      const profile = await this.getProfile(req);
+
+      if (file && profile.imageUrl) fs.unlinkSync(profile.imageUrl);
+
       const updateProfile = await this.userProfileModel.findOneAndUpdate(
         { user: req.user.id },
-        payload,
+        {
+          ...payload,
+          ...(file ? { imageUrl: file.path } : null),
+        },
         {
           new: true,
           runValidators: true,

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNumber, IsString } from 'class-validator';
 
-export class CreateProfileDto {
+export class UpdateProfileDto {
   @ApiProperty()
   @IsString()
   name: string;
@@ -23,12 +23,12 @@ export class CreateProfileDto {
   interests: string[];
 }
 
-export class CreateProfileFileDto {
+export class UpdateProfileFileDto {
   @ApiProperty({ required: false })
   @ApiProperty({ type: 'string', format: 'binary' })
   file: Express.Multer.File;
 
-  @ApiProperty({ type: CreateProfileDto })
+  @ApiProperty({ type: UpdateProfileDto })
   @IsString()
   data: string;
 }
