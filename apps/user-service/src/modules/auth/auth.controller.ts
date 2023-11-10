@@ -32,7 +32,7 @@ export class AuthController {
   @HttpCode(200)
   @ApiBaseResponse(User)
   async login(@Body() body: LoginDto, @Request() req) {
-    const result = await this.authService.login(req.user);
+    const result = await this.authService.login(req.user.id);
     return { statusCode: 200, message: SUCCESS_MSG, result };
   }
 

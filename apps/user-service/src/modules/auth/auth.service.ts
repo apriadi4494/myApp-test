@@ -27,9 +27,9 @@ export class AuthService {
     }
   }
 
-  async login(req: any) {
+  async login(userId: string) {
     try {
-      const token = this.generateToken(req.id);
+      const token = this.generateToken(userId);
       return token;
     } catch (err) {
       throw err;

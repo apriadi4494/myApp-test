@@ -14,7 +14,6 @@ import { ApiBaseResponse, AuthJwtGuard } from 'libs/src/common';
 import { SUCCESS_MSG } from 'libs/src/common/constants';
 import { UserService } from './user.service';
 import { CustomBaseResponseInterceptor } from 'libs/src/common/interceptors';
-import { Request } from 'express';
 import { UserProfile } from './schema/user-profile.schema';
 import {
   CreateProfileDto,
@@ -37,8 +36,8 @@ export class UserController {
 
   @Get('getProfile')
   @ApiBaseResponse(UserProfile)
-  async getOne(@Req() req: Request) {
-    const result = await this.userService.getProfile(req);
+  async getOne(@Req() req) {
+    const result = await this.userService.getProfile(req.user.id);
     return { message: SUCCESS_MSG, result };
   }
 
@@ -52,7 +51,11 @@ export class UserController {
     @Req() req,
   ) {
     const data: CreateProfileDto = JSON.parse(body.data);
-    const result = await this.userService.createProfile(data, req, file);
+    const result = await this.userService.createProfile(
+      data,
+      req.user.id,
+      file,
+    );
     return { statusCode: 200, message: SUCCESS_MSG, result };
   }
 
@@ -67,7 +70,11 @@ export class UserController {
   ) {
     const data: UpdateProfileDto = JSON.parse(body.data);
 
-    const result = await this.userService.updateProfile(data, req, file);
+    const result = await this.userService.updateProfile(
+      data,
+      req.user.id,
+      file,
+    );
     return { statusCode: 200, message: SUCCESS_MSG, result };
   }
 }

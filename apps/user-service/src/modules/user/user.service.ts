@@ -28,17 +28,17 @@ export class UserService {
 
   async createProfile(
     payload: CreateProfileDto,
-    req,
-    file: Express.Multer.File,
+    userId: string,
+    file?: Express.Multer.File,
   ): Promise<UserProfile> {
     try {
       //check is profle exist
-      const profile = await this.getProfile(req);
+      const profile = await this.getProfile(userId);
       if (profile) throw new BadRequestException('Profile already exist');
 
       const userProfile = await this.userProfileModel.create({
         ...payload,
-        user: req.user.id,
+        user: userId,
         ...(file ? { imageUrl: file.path } : null),
       });
       return userProfile;
@@ -50,16 +50,16 @@ export class UserService {
 
   async updateProfile(
     payload: CreateProfileDto,
-    req,
+    userId: string,
     file: Express.Multer.File,
   ): Promise<UserProfile> {
     try {
-      const profile = await this.getProfile(req);
+      const profile = await this.getProfile(userId);
 
       if (file && profile.imageUrl) fs.unlinkSync(profile.imageUrl);
 
       const updateProfile = await this.userProfileModel.findOneAndUpdate(
-        { user: req.user.id },
+        { user: userId },
         {
           ...payload,
           ...(file ? { imageUrl: file.path } : null),
@@ -75,10 +75,10 @@ export class UserService {
     }
   }
 
-  async getProfile(req): Promise<UserProfile> {
+  async getProfile(userId: string): Promise<UserProfile> {
     try {
       const userProfile = await this.userProfileModel.findOne({
-        user: req.user.id,
+        user: userId,
       });
       return userProfile;
     } catch (err) {
