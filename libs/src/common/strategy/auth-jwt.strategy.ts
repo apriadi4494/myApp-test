@@ -15,11 +15,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'auth-jwt') {
 
   //TODO change any to dto
   async validate(payload: any) {
-    const { id } = await this.authService.findAuthorization(payload.sub);
-
-    console.log(id, 'tesssssssssssss');
     return {
-      id: payload.sub,
+      id: payload.id,
     };
   }
 }
