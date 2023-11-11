@@ -7,12 +7,6 @@ export class UserChat extends Document {
   documentId: string;
 
   @Prop()
-  email: string;
-
-  @Prop()
-  username: string;
-
-  @Prop()
   name: string;
 
   @Prop({ required: false })

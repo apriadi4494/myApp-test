@@ -20,4 +20,16 @@ export class UserChatService {
       throw err.message;
     }
   }
+
+  async createUpdateUserChat(data: CreateUserChatDto): Promise<UserChat> {
+    try {
+      const create = await this.userChatModel.findOneAndUpdate(
+        { documentId: data.documentId },
+        data,
+      );
+      return create;
+    } catch (err) {
+      throw err.message;
+    }
+  }
 }

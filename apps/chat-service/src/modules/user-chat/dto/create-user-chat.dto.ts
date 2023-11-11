@@ -3,10 +3,6 @@ export class CreateUserChatDto {
 
   name: string;
 
-  email: string;
-
-  username: string;
-
   imageUrl: string;
 }
 

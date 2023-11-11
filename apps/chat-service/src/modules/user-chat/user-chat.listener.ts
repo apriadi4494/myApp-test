@@ -11,11 +11,11 @@ import { ListenerGuard } from 'libs/src/common/guard/listener.guard';
 
 @Controller()
 @UseGuards(ListenerGuard)
-export class OrderPosListener {
+export class UserChatListener {
   constructor(private readonly userChatService: UserChatService) {}
 
-  @MessagePattern('CREATE_USER')
-  async listenAndTakeStockFromCfs(
+  @MessagePattern('CREATE_USER_CHAT')
+  async createUserChat(
     @Payload() message: MessageUserChatDto,
     @Ctx() context: RmqContext,
   ): Promise<void> {
@@ -23,6 +23,19 @@ export class OrderPosListener {
     const originalMsg = context.getMessage();
 
     await this.userChatService.createUserChat(message.data);
+
+    channel.ack(originalMsg);
+  }
+
+  @MessagePattern('UPDATE_USER_CHAT')
+  async updateUserChat(
+    @Payload() message: MessageUserChatDto,
+    @Ctx() context: RmqContext,
+  ): Promise<void> {
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+
+    await this.userChatService.createUpdateUserChat(message.data);
 
     channel.ack(originalMsg);
   }
