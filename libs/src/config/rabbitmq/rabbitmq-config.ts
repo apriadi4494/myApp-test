@@ -1,4 +1,4 @@
-import { RmqOptions, Transport } from '@nestjs/microservices';
+import { ClientsModule, RmqOptions, Transport } from '@nestjs/microservices';
 import { QUEUE_NAME, RABBIT_URL } from '../env/env-config';
 
 export const RmqOptionConfigs: RmqOptions = {
@@ -12,3 +12,17 @@ export const RmqOptionConfigs: RmqOptions = {
     },
   },
 };
+
+export const RmqClientConfigModule = ClientsModule.register([
+  {
+    name: 'PUBLISHER',
+    transport: Transport.RMQ,
+    options: {
+      urls: [RABBIT_URL],
+      queue: QUEUE_NAME,
+      queueOptions: {
+        durable: false,
+      },
+    },
+  },
+]);
