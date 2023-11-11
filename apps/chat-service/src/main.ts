@@ -6,9 +6,15 @@ import { ValidationPipe } from '@nestjs/common';
 import { ChatServiceModule } from './chat-service.module';
 import { APP_HOST, APP_NODE, APP_PORT_CHAT, setupSwagger } from 'libs/src';
 import { BadRequestExceptionFilter } from 'libs/src/common/exception/badRequest.filter';
+import { MicroserviceOptions } from '@nestjs/microservices';
+import { RmqOptionConfigs } from 'libs/src/config/rabbitmq/rabbitmq-config';
 
 async function bootstrap() {
   const app = await NestFactory.create(ChatServiceModule);
+  const appListen = await NestFactory.createMicroservice<MicroserviceOptions>(
+    ChatServiceModule,
+    RmqOptionConfigs,
+  );
 
   /**
    * Enable Helmet
@@ -44,12 +50,14 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new BadRequestExceptionFilter(httpAdapter));
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  appListen.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   /**
    * Set Swagger
    */
   setupSwagger(app);
 
+  await appListen.listen();
   await app.listen(APP_PORT_CHAT, APP_HOST, () => {
     console.log(`[WEB SERVICE ${APP_NODE}]`, `//${APP_HOST}:${APP_PORT_CHAT}`);
   });

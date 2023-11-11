@@ -14,3 +14,6 @@ export const TOKEN_EXPIRED: string = process.env.TOKEN_EXPIRED;
 export const REFRESH_TOKEN_EXPIRED: string = process.env.REFRESH_TOKEN_EXPIRED;
 
 export const SWAGGER_URL: string = process.env.SWAGGER_URL;
+
+export const RABBIT_URL: string = process.env.RABBIT_URL;
+export const QUEUE_NAME: string = process.env.QUEUE_NAME;
