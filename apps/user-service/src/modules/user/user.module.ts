@@ -4,6 +4,7 @@ import { UserSchema } from './schema/user.schema';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { UserProfileSchema } from './schema/user-profile.schema';
+import { RmqClientConfigModule } from 'libs/src/config/rabbitmq/rabbitmq-config';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UserProfileSchema } from './schema/user-profile.schema';
         schema: UserProfileSchema,
       },
     ]),
+    RmqClientConfigModule,
   ],
   providers: [UserService],
   controllers: [UserController],

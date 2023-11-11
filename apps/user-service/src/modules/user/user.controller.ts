@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
+  Inject,
   Post,
   Put,
   Req,
@@ -25,6 +27,7 @@ import {
   UpdateProfileDto,
   UpdateProfileFileDto,
 } from './dto/update-profile.dto';
+import { ClientProxy } from '@nestjs/microservices';
 
 @UseGuards(AuthJwtGuard)
 @Controller()
@@ -32,7 +35,10 @@ import {
 @ApiBearerAuth()
 @UseInterceptors(CustomBaseResponseInterceptor)
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    @Inject('PUBLISHER') private readonly client: ClientProxy,
+    private readonly userService: UserService,
+  ) {}
 
   @Get('getProfile')
   @ApiBaseResponse(UserProfile)
@@ -49,6 +55,7 @@ export class UserController {
     @Body() body: CreateProfileFileDto,
     @UploadedFile() file: Express.Multer.File,
     @Req() req,
+    @Headers('authorization') authorization: string,
   ) {
     const data: CreateProfileDto = JSON.parse(body.data);
     const result = await this.userService.createProfile(
@@ -56,6 +63,13 @@ export class UserController {
       req.user.id,
       file,
     );
+
+    const token = authorization.split(' ')[1];
+    this.client.emit('CREATE_USER_CHAT', {
+      data: { ...result, documentId: result.id },
+      token,
+    });
+
     return { statusCode: 200, message: SUCCESS_MSG, result };
   }
 
@@ -67,6 +81,7 @@ export class UserController {
     @Body() body: UpdateProfileFileDto,
     @Req() req,
     @UploadedFile() file: Express.Multer.File,
+    @Headers('authorization') authorization: string,
   ) {
     const data: UpdateProfileDto = JSON.parse(body.data);
 
@@ -75,6 +90,16 @@ export class UserController {
       req.user.id,
       file,
     );
+
+    const token = authorization.split(' ')[1];
+    this.client.emit('UPDATE_USER_CHAT', {
+      data: {
+        name: result.name,
+        imageUrl: result.imageUrl,
+        documentId: result.id,
+      },
+      token,
+    });
     return { statusCode: 200, message: SUCCESS_MSG, result };
   }
 }
