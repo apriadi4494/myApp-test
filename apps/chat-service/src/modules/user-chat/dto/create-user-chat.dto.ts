@@ -1,16 +1,17 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+export class CreateUserChatDto {
+  documentId: string;
 
-export class CreateProfileDto {
-  @ApiProperty()
-  @IsString()
   name: string;
 
-  @ApiProperty()
-  @IsString()
   email: string;
 
-  @ApiProperty()
-  @IsNumber()
-  username: number;
+  username: string;
+
+  imageUrl: string;
+}
+
+export class MessageUserChatDto {
+  data: CreateUserChatDto;
+
+  token: string;
 }

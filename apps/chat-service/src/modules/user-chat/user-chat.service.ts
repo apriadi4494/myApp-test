@@ -3,11 +3,21 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { UserChat } from './schema/user-chat.schema';
+import { CreateUserChatDto } from './dto/create-user-chat.dto';
 
 @Injectable()
-export class UserService {
+export class UserChatService {
   constructor(
     @InjectModel(UserChat.name)
-    private readonly userModel: mongoose.Model<UserChat>,
+    private readonly userChatModel: mongoose.Model<UserChat>,
   ) {}
+
+  async createUserChat(data: CreateUserChatDto): Promise<UserChat> {
+    try {
+      const create = await this.userChatModel.create(data);
+      return create;
+    } catch (err) {
+      throw err.message;
+    }
+  }
 }
