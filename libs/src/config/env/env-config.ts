@@ -3,10 +3,11 @@ dotenv.config();
 
 export const APP_HOST: string = process.env.APP_HOST;
 export const APP_PORT: string = process.env.APP_PORT;
+export const APP_PORT_CHAT: string = process.env.APP_PORT_CHAT;
 export const APP_NODE: string = process.env.APP_NODE;
 
-export const DB_NAME: string = process.env.DB_NAME;
-export const DB_URL: string = process.env.DB_URL;
+export const DB_URL_USER: string = process.env.DB_URL_USER;
+export const DB_URL_CHAT: string = process.env.DB_URL_CHAT;
 
 export const JWT_SECRET: string = process.env.JWT_SECRET;
 export const TOKEN_EXPIRED: string = process.env.TOKEN_EXPIRED;
