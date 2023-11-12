@@ -15,7 +15,6 @@ import { SUCCESS_MSG } from 'libs/src/common/constants';
 import { ApiPaginatedResponse, AuthJwtGuard } from 'libs/src/common';
 import { Chat } from './schema/chat.schema';
 import { ViewMessageDto } from './dto/view-message.dto';
-import { ListOptionDto } from 'libs/src/common/dto/query-options.dto';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CustomBaseResponseInterceptor } from 'libs/src/common/interceptors';
 import { SendMessageDto } from './dto/send-message.dto';
@@ -32,13 +31,10 @@ export class ChatController {
     private readonly chatService: ChatService,
   ) {}
 
-  @Get('viewMessages/:roomId')
+  @Get('viewMessages')
   @ApiPaginatedResponse(Chat)
-  async getChats(
-    @Param() param: ViewMessageDto,
-    @Query() query: ListOptionDto,
-  ) {
-    const result = await this.chatService.getChats(param.roomId, query);
+  async getChats(@Query() query: ViewMessageDto) {
+    const result = await this.chatService.getChats(query);
     return { message: SUCCESS_MSG, result };
   }
 

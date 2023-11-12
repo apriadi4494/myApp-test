@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 import { Chat } from './schema/chat.schema';
-import { ListOptionDto } from 'libs/src/common/dto/query-options.dto';
 import { SendMessageDto } from './dto/send-message.dto';
+import { ViewMessageDto } from './dto/view-message.dto';
 
 @Injectable()
 export class ChatService {
@@ -13,8 +14,11 @@ export class ChatService {
     private readonly chatModel: mongoose.Model<Chat>,
   ) {}
 
-  async getChats(roomId: string, query: ListOptionDto): Promise<Chat[]> {
+  async getChats(
+    query: ViewMessageDto,
+  ): Promise<{ roomId: string | Types.ObjectId; data: Chat[] }> {
     try {
+      const roomId = query.roomId ?? new ObjectId();
       const options: any = {
         $and: [{ roomId }],
       };
@@ -30,7 +34,10 @@ export class ChatService {
         .limit(query.limit)
         .exec();
 
-      return chats;
+      return {
+        roomId,
+        data: chats,
+      };
     } catch (err) {
       throw new BadRequestException(err.message);
     }
