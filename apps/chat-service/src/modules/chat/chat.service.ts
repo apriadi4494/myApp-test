@@ -27,7 +27,7 @@ export class ChatService {
 
       const chats = await this.chatModel
         .find(options)
-        .populate({ path: 'sender', foreignField: 'documentId' })
+        .populate('sender')
         .sort({
           createdAt: 'asc',
         })

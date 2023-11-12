@@ -66,7 +66,7 @@ export class UserController {
 
     const token = authorization.split(' ')[1];
     this.client.emit('CREATE_USER_CHAT', {
-      data: { ...result, documentId: result.id },
+      data: { _id: req.user.id, name: result.name, imageUrl: result.imageUrl },
       token,
     });
 

@@ -1,5 +1,5 @@
 export class CreateUserChatDto {
-  documentId: string;
+  _id: string;
 
   name: string;
 

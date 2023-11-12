@@ -4,9 +4,6 @@ import { Document } from 'mongoose';
 @Schema({ timestamps: true })
 export class UserChat extends Document {
   @Prop()
-  documentId: string;
-
-  @Prop()
   name: string;
 
   @Prop({ required: false })

@@ -24,7 +24,7 @@ export class UserChatService {
   async createUpdateUserChat(data: CreateUserChatDto): Promise<UserChat> {
     try {
       const create = await this.userChatModel.findOneAndUpdate(
-        { documentId: data.documentId },
+        { id: data._id },
         data,
       );
       return create;
