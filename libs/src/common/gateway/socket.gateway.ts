@@ -9,7 +9,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { UseFilters, UsePipes, ValidationPipe } from '@nestjs/common';
-import { JWT_SECRET, SOCKET_CORS } from 'libs/src';
+import { JWT_SECRET, SOCKET_CORS } from '../../config';
 import { JwtService } from '@nestjs/jwt';
 import { AllExceptionsSocketFilter } from '../catch-filter/socket-catch.filter';
 
