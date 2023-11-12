@@ -5,10 +5,9 @@ import {
   Payload,
   RmqContext,
 } from '@nestjs/microservices';
-import { ListenerGuard } from 'libs/src/common/guard/listener.guard';
 import { ChatService } from './chat.service';
 import { MessageChatDto } from './dto/send-message.dto';
-import { SocketGateway } from 'libs/src/common/gateway/socket.gateway';
+import { ListenerGuard, SocketGateway } from '@app/main';
 
 @Controller()
 @UseGuards(ListenerGuard)

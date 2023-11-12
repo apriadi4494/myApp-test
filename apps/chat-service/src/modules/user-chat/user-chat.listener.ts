@@ -7,7 +7,7 @@ import {
 } from '@nestjs/microservices';
 import { UserChatService } from './user-chat.service';
 import { MessageUserChatDto } from './dto/create-user-chat.dto';
-import { ListenerGuard } from 'libs/src/common/guard/listener.guard';
+import { ListenerGuard } from '@app/main';
 
 @Controller()
 @UseGuards(ListenerGuard)

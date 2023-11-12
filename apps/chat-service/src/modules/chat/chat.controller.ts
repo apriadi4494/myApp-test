@@ -10,14 +10,18 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { SUCCESS_MSG } from 'libs/src/common/constants';
-import { ApiPaginatedResponse, AuthJwtGuard } from 'libs/src/common';
 import { Chat } from './schema/chat.schema';
-import { ViewMessageDto } from './dto/view-message.dto';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { CustomBaseResponseInterceptor } from 'libs/src/common/interceptors';
-import { SendMessageDto } from './dto/send-message.dto';
 import { ClientProxy } from '@nestjs/microservices';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+
+import { ViewMessageDto } from './dto/view-message.dto';
+import { SendMessageDto } from './dto/send-message.dto';
+import {
+  AuthJwtGuard,
+  CustomBaseResponseInterceptor,
+  ApiPaginatedResponse,
+  SUCCESS_MSG,
+} from '@app/main';
 
 @UseGuards(AuthJwtGuard)
 @Controller()

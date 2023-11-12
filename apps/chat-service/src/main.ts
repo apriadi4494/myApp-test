@@ -4,10 +4,15 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
 import { ChatServiceModule } from './chat-service.module';
-import { APP_HOST, NODE_ENV, APP_PORT_CHAT, setupSwagger } from 'libs/src';
-import { BadRequestExceptionFilter } from 'libs/src/common/exception/badRequest.filter';
 import { MicroserviceOptions } from '@nestjs/microservices';
-import { RmqOptionConfigs } from 'libs/src/config/rabbitmq/rabbitmq-config';
+import {
+  RmqOptionConfigs,
+  NODE_ENV,
+  BadRequestExceptionFilter,
+  setupSwagger,
+  APP_PORT_CHAT,
+  APP_HOST,
+} from '@app/main';
 
 async function bootstrap() {
   const app = await NestFactory.create(ChatServiceModule);
