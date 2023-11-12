@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:  
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    networks:
+      - webnet
+  
+  user-service:
+    container_name: user-service
+    build:
+      context: .
+      target: production
+      args:
+        - APP=user-service
+    volumes:
+      - .:/usr/src/user-service
+      - /usr/src/user-service/node_modules
+    env_file:
+      - .env
+    environment:
+      - DB_URL_USER=mongodb://database:27017/chat-service
+      - RABBIT_URL=amqp://admin:admin@rabbitmq:5672
+    ports:
+      - "3001:3001"
+    command: npm run start:prod-user
+    restart: always
+    networks:
+      - webnet
+
+  chat-service:
+    container_name: chat-service
+    build:
+      context: .
+      target: development
+      args:
+        - APP=chat-service
+    env_file:
+      - .env
+    environment:
+      - DB_URL_CHAT=mongodb://database:27017/chat-service
+      - RABBIT_URL=amqp://admin:admin@rabbitmq:5672
+    ports:
+      - 3002:3002
+    command: npm run start:prod-chat
+    networks:
+      - webnet
+
+  database: # name of the third service
+    image: mongo # specify image to build container from
+    container_name: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - webnet
+
+  nginx:
+    build: 
+      context: ./loadbalancer
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - webnet
+    restart: always
+
+networks:
+  webnet:
