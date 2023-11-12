@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Inject,
-  Param,
   Post,
   Query,
   Req,
@@ -38,16 +37,12 @@ export class ChatController {
     return { message: SUCCESS_MSG, result };
   }
 
-  @Post('sendMessage/:roomId')
+  @Post('sendMessage')
   @ApiPaginatedResponse(Chat)
-  async sendMessage(
-    @Body() payload: SendMessageDto,
-    @Param() param: ViewMessageDto,
-    @Req() req,
-  ) {
+  async sendMessage(@Body() payload: SendMessageDto, @Req() req) {
     const token = req.headers.authorization.split(' ')[1];
     this.client.emit('SEND_MESSAGE', {
-      data: { ...payload, sender: req.user.id, roomId: param.roomId },
+      data: { ...payload, sender: req.user.id, roomId: payload.roomId },
       token,
     });
 

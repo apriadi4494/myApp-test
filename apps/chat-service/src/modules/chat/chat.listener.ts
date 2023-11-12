@@ -8,11 +8,15 @@ import {
 import { ListenerGuard } from 'libs/src/common/guard/listener.guard';
 import { ChatService } from './chat.service';
 import { MessageChatDto } from './dto/send-message.dto';
+import { SocketGateway } from 'libs/src/common/gateway/socket.gateway';
 
 @Controller()
 @UseGuards(ListenerGuard)
 export class ChatListener {
-  constructor(private readonly chatService: ChatService) {}
+  constructor(
+    private readonly socketGatewawy: SocketGateway,
+    private readonly chatService: ChatService,
+  ) {}
 
   @MessagePattern('SEND_MESSAGE')
   async updateUserChat(
@@ -25,5 +29,7 @@ export class ChatListener {
     await this.chatService.createChat(message.data);
 
     channel.ack(originalMsg);
+
+    this.socketGatewawy.server.to(message.data.receiver).emit('NOTIF_MESSAGE');
   }
 }

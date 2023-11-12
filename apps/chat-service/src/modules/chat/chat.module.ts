@@ -6,6 +6,7 @@ import { ChatService } from './chat.service';
 import { ChatController } from './chat.controller';
 import { RmqClientConfigModule } from 'libs/src/config/rabbitmq/rabbitmq-config';
 import { ChatListener } from './chat.listener';
+import { SocketGateway } from 'libs/src/common/gateway/socket.gateway';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { ChatListener } from './chat.listener';
       },
     ]),
   ],
-  providers: [ChatService],
+  providers: [ChatService, SocketGateway],
   controllers: [ChatController, ChatListener],
   exports: [],
 })

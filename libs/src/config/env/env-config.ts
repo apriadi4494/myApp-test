@@ -17,3 +17,5 @@ export const SWAGGER_URL: string = process.env.SWAGGER_URL;
 
 export const RABBIT_URL: string = process.env.RABBIT_URL;
 export const QUEUE_NAME: string = process.env.QUEUE_NAME;
+
+export const SOCKET_CORS: string = process.env.SOCKET_CORS;

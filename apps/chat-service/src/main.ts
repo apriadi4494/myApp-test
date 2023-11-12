@@ -49,6 +49,7 @@ async function bootstrap() {
    */
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new BadRequestExceptionFilter(httpAdapter));
+
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   appListen.useGlobalPipes(new ValidationPipe({ transform: true }));
 
