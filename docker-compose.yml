@@ -39,7 +39,7 @@ services:
     container_name: chat-service
     build:
       context: .
-      target: development
+      target: production
       args:
         - APP=chat-service
     env_file:
