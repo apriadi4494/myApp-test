@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { User } from '../user/schema/user.schema';
 import { JwtService } from '@nestjs/jwt';
-import { REFRESH_TOKEN_EXPIRED } from 'libs/src';
+import { REFRESH_TOKEN_EXPIRED } from '@app/main';
 
 @Injectable()
 export class AuthService {

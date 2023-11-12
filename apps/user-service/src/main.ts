@@ -4,8 +4,13 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
 import { UserServiceModule } from './user-service.module';
-import { APP_HOST, NODE_ENV, APP_PORT, setupSwagger } from 'libs/src';
-import { BadRequestExceptionFilter } from 'libs/src/common/exception/badRequest.filter';
+import {
+  APP_HOST,
+  NODE_ENV,
+  APP_PORT,
+  setupSwagger,
+  BadRequestExceptionFilter,
+} from '@app/main';
 
 async function bootstrap() {
   const app = await NestFactory.create(UserServiceModule);

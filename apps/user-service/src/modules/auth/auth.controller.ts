@@ -8,14 +8,17 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { ApiBaseResponse, AuthLocalGuard } from 'libs/src/common';
 import { LoginDto } from './dto/login-dto';
-import { SUCCESS_MSG } from 'libs/src/common/constants';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/registerDto';
 import { UserService } from '../user/user.service';
-import { CustomBaseResponseInterceptor } from 'libs/src/common/interceptors';
 import { User } from '../user/schema/user.schema';
+import {
+  CustomBaseResponseInterceptor,
+  AuthLocalGuard,
+  ApiBaseResponse,
+  SUCCESS_MSG,
+} from '@app/main';
 
 @Controller()
 @ApiTags('Auth Services')

@@ -1,5 +1,5 @@
+import { findZodiac } from '@app/main';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { findZodiac } from 'libs/src/common/dictionary/horoscope.dictionary';
 import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true, autoIndex: true, toJSON: { virtuals: true } })

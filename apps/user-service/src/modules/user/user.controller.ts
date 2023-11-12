@@ -12,22 +12,26 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
-import { ApiBaseResponse, AuthJwtGuard } from 'libs/src/common';
-import { SUCCESS_MSG } from 'libs/src/common/constants';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ClientProxy } from '@nestjs/microservices';
+
 import { UserService } from './user.service';
-import { CustomBaseResponseInterceptor } from 'libs/src/common/interceptors';
 import { UserProfile } from './schema/user-profile.schema';
 import {
   CreateProfileDto,
   CreateProfileFileDto,
 } from './dto/create-profile.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { media } from 'libs/src/config/storage/storage-config';
 import {
   UpdateProfileDto,
   UpdateProfileFileDto,
 } from './dto/update-profile.dto';
-import { ClientProxy } from '@nestjs/microservices';
+import {
+  AuthJwtGuard,
+  CustomBaseResponseInterceptor,
+  ApiBaseResponse,
+  SUCCESS_MSG,
+  media,
+} from '@app/main';
 
 @UseGuards(AuthJwtGuard)
 @Controller()
