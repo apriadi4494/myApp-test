@@ -6,12 +6,12 @@ export class ListOptionDto {
   @ApiProperty({ required: false })
   public search?: string;
 
-  @ApiProperty()
+  @ApiProperty({ default: 1 })
   @Type(() => Number)
   @IsInt()
   public page: number;
 
-  @ApiProperty()
+  @ApiProperty({ default: 5 })
   @Type(() => Number)
   @IsInt()
   public limit: number;
