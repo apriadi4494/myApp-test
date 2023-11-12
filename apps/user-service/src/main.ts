@@ -4,7 +4,7 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
 import { UserServiceModule } from './user-service.module';
-import { APP_HOST, APP_NODE, APP_PORT, setupSwagger } from 'libs/src';
+import { APP_HOST, NODE_ENV, APP_PORT, setupSwagger } from 'libs/src';
 import { BadRequestExceptionFilter } from 'libs/src/common/exception/badRequest.filter';
 
 async function bootstrap() {
@@ -15,7 +15,7 @@ async function bootstrap() {
    * Helmet helps you secure your Express apps by setting various HTTP headers.
    * https://github.com/helmetjs/helmet#how-it-works
    */
-  if (APP_NODE === 'production') {
+  if (NODE_ENV === 'production') {
     app.use(helmet());
   }
 
@@ -50,8 +50,8 @@ async function bootstrap() {
    */
   setupSwagger(app);
 
-  await app.listen(APP_PORT, APP_HOST, () => {
-    console.log(`[WEB SERVICE ${APP_NODE}]`, `//${APP_HOST}:${APP_PORT}`);
+  await app.listen(APP_PORT, () => {
+    console.log(`[WEB SERVICE ${NODE_ENV}]`, `//${APP_HOST}:${APP_PORT}`);
   });
 }
 

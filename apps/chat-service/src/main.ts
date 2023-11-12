@@ -4,7 +4,7 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
 import { ChatServiceModule } from './chat-service.module';
-import { APP_HOST, APP_NODE, APP_PORT_CHAT, setupSwagger } from 'libs/src';
+import { APP_HOST, NODE_ENV, APP_PORT_CHAT, setupSwagger } from 'libs/src';
 import { BadRequestExceptionFilter } from 'libs/src/common/exception/badRequest.filter';
 import { MicroserviceOptions } from '@nestjs/microservices';
 import { RmqOptionConfigs } from 'libs/src/config/rabbitmq/rabbitmq-config';
@@ -21,7 +21,7 @@ async function bootstrap() {
    * Helmet helps you secure your Express apps by setting various HTTP headers.
    * https://github.com/helmetjs/helmet#how-it-works
    */
-  if (APP_NODE === 'production') {
+  if (NODE_ENV === 'production') {
     app.use(helmet());
   }
 
@@ -59,8 +59,8 @@ async function bootstrap() {
   setupSwagger(app);
 
   await appListen.listen();
-  await app.listen(APP_PORT_CHAT, APP_HOST, () => {
-    console.log(`[WEB SERVICE ${APP_NODE}]`, `//${APP_HOST}:${APP_PORT_CHAT}`);
+  await app.listen(APP_PORT_CHAT, () => {
+    console.log(`[WEB SERVICE ${NODE_ENV}]`, `//${APP_HOST}:${APP_PORT_CHAT}`);
   });
 }
 
